@@ -60,12 +60,15 @@ def showKeys(path, keyDict, ignoredFiles):
         replaceInAllFiles(path, placeholder, key, ignoredFiles)
 
 if __name__ == '__main__':
-    # Configure command line arguments, at least one must be given
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--conceal', action='store_true', default=False,
-                        help='Conceal keys')
-    parser.add_argument('-r', '--reveal', action='store_true', default=False,
-                        help='Reveal keys')
+    # Exactly one action argument, either conceal or reveal, must be passed
+    action = parser.add_mutually_exclusive_group(required=True)
+    action.add_argument('-c', '--conceal', action='store_true',
+                             default=False, help='Conceal keys')
+    action.add_argument('-r', '--reveal', action='store_true',
+                             default=False, help='Reveal keys')
+    # Both path and key directory are optional because they have reasonable
+    # defaults
     parser.add_argument('-p', '--path', default="./",
                         help='Path to swap keys in')
     parser.add_argument('-k', '--keydir', default=".keys/",
